@@ -1,22 +1,31 @@
 # Events
 
-Eventing allows program writers to *register* function definitions that will be called if and when a specified *event* occurs. By firing events that call functions, rather than calling functions directly, zero, one, or more than one function can be called when an event occurs, and, the parts of the program that fire events can be agnostic of what function(s) will be called.
+Eventing allows program writers to *register* function definitions that will be called if and when a specified *event* occurs. By firing events that call functions rather than calling functions directly, zero, one, or more than one function can be called when an event occurs, and, the parts of the program that fire events can be agnostic of what function(s) will be called.
+
+## Objectives
+
+After completing this article, you should be able to:
+
+- Describe what an eventing system is
+- Describe key differences between using an event system to call functions, and, calling functions directly
 
 ## An Example Eventing System
+
+In order to better understand what happens when using event driven code, we will create a simple eventing system.
 
 Eventing systems need to be able to register functions to be called when a specific event is fired, and, need to call the appropriate function(s) when an event is fired. Here's the scaffolding for a basic eventing system:
 
 ```javascript
 let eventSystem = {
-  registerCallback: function(event, callback) { /* Create mapping for the passed in event and callback */ },
+  registerCallback: function(event, callback) { /* Create mapping between the passed in event and callback */ },
   emitEvent: function(event) { /* Call the functions registered for the passed in event */ },
-  eventMappings: { /* For each event, store callbacks that have been registered */ }
+  eventMappings: { /* Store mappings between events and callbacks */ }
 };
 ```
 
 ### An Ideal `eventMappings`
 
-Before implementing the `registerCallback` and `emitEvent` methods, it will be helpful to know what we would like the `eventMappings` property to look like. Because we want to be able to call more than one function when a given event occurs, it makes sense to map each registered event name to an array containing registered callbacks:
+Before implementing the `registerCallback` and `emitEvent` methods, it will be helpful to know what we would like the `eventMappings` property to look like once it has been populated. Because we want to be able to call more than one function when a given event occurs, it makes sense to map each registered event name to an array containing registered callbacks:
 
 ```javascript
 let eventSystem = {
